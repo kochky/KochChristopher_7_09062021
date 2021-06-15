@@ -22,16 +22,30 @@
           <img src="images/logo.svg" id=logo alt=logo class="row">
           <h1 class="row"id="title">Les petits plats</h1>
           <div class="row align-items-center text-right" id=search-container>
-              <input type="search" id=search class="col-11" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette ">
+              <input type="text" id=search class="col-11" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette ">
               <i class="fa fa-search fa-2x col-1 " aria-hidden="true" id=search-icon></i>
           </div>
           <div class="row allButtons">
-                <div class="btn blue " id=blue-btn><input type="search" class="filter-btn blue" placeholder="Ingrédients">
-                    <i class="fas fa-angle-down fa-lg btn-arrow"></i><ul class="d-flex flex-column flex-wrap align-content-between button-extend blue" id=ingredientdiv></ul></div>
-                <div  class="btn green" id=green-btn><input type="search" class="filter-btn green" placeholder="Appareil">
-                    <i class="fas fa-angle-down fa-lg  btn-arrow"></i><div  class= " green" id=applianceDiv></div></div>
-                <div  class="btn red" id=red-btn><input type="search" class="filter-btn red"  placeholder="Ustensiles">
-                    <i class="fas fa-angle-down fa-lg btn-arrow"></i><div  class= "red" id=ustensilsDiv></div></div>
+                <div class="btni blue " id=blue-btn>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" class="filter-btn blue" placeholder="Ingrédients">
+                        <i class="fas fa-angle-down fa-lg btn-arrow "></i>
+                    </div>
+                    <ul class="d-flex flex-column flex-wrap align-content-between button-extend blue" id=ingredientdiv></ul>
+                </div>
+                <div  class="btni green" id=green-btn>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="text" class="filter-btn green" placeholder="Appareil">
+                        <i class="fas fa-angle-down fa-lg  btn-arrow"></i>
+                    </div>
+                    <ul class="d-flex flex-column flex-wrap align-content-between button-extend green" id=appliancediv></ul>
+                </div>
+                <div  class="btni red" id=red-btn>
+                    <div class="d-flex justify-content-between align-items-center"><input type="" class="filter-btn red"  placeholder="Ustensiles">
+                        <i class="fas fa-angle-down fa-lg btn-arrow"></i>
+                    </div>
+                    <ul class="d-flex flex-column flex-wrapalign-content-between button-extend red" id=ustensildiv></ul
+                        ></div>
           </div>
          
           
@@ -39,6 +53,7 @@
       </header>
       <main class=container id=container-main>
           <div class="card-deck " id=card-deck>
+              <p id=noresult>Aucune recette ne correspond à votre critère...<br> Vous pouvez chercher "tarte aux pommes", "poisson", etc...</p>
         
             <!-- <div class="card col-4">
                 <img class="card-img-op bg-dark" src="" alt="" height="178">

@@ -33,8 +33,7 @@ p{
 }
 
 input, input:focus{
-   outline:0;
-    
+   outline:0;  
 }
 h5 {
     font-size: 18px;
@@ -67,12 +66,13 @@ h5 {
     z-index:99;
 
 }
-.btn {
+.btni {
     margin-right:20px;
     height:71px;
-    padding:0;
-    min-width: 172px; 
-    border:none;   
+    padding:0px !important;
+    border-radius: 5px;
+    width: 172px; 
+    border:none;
     
 }
 .button-extend{
@@ -88,7 +88,15 @@ h5 {
 }
 
 
-
+.placeholdercolorblue::-webkit-input-placeholder{
+    color:#98c0fb !important
+}
+.placeholdercolorgreen::-webkit-input-placeholder{
+    color:hsl(151,59%,80%)!important
+}
+.placeholdercolorred::-webkit-input-placeholder{
+    color:hsl(6,80%,80%)!important
+}
 .blue{
     background-color:#3282f7;
 }
@@ -101,22 +109,26 @@ h5 {
 .filter-btn::placeholder{
     color:white;
     font-size: 18px;
+    text-align: left;
  
 }
 .filter-btn{
+
     min-height:70px;
     border-radius: 5px;
-    padding-left: 20px; 
+    padding-left: 20px;
     font-size: 16px;
     font-weight: 500;   
-    width:130px;
     color:white;
-  
-    
+    width:80%; 
+
 }
 .btn-arrow {
+    display:block;
     color:white;
     margin-right:20px;
+   
+   
 }
 header{
     margin-bottom: 20px;
@@ -157,4 +169,9 @@ header{
     margin-top:120px;
     padding:0;
     
+}
+#noresult {
+    margin:auto;
+    font-size:24px;
+    display:none;
 }
