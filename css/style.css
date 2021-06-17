@@ -8,6 +8,7 @@
     }
 body{
     margin-top:45px;
+    min-width:1024px;
 }
 .container{
     max-width: 1240px;
@@ -55,15 +56,20 @@ h5 {
     border-radius: 5px;
     height: 70px;
     padding-left:20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     
 }
 #search::placeholder{
     color:#adadad;
     font-size: 18px;
+    font-weight: 700;
 }
+
 .allButtons{
     position:absolute;
     z-index:99;
+    width:100%;
 
 }
 .btni {
@@ -73,6 +79,7 @@ h5 {
     border-radius: 5px;
     width: 172px; 
     border:none;
+  
     
 }
 .button-extend{
@@ -84,6 +91,10 @@ h5 {
     position:relative;
     top:-2px  ;
     height:560px;
+    text-overflow: ellipsis;
+    border-radius: 0 0 5px 5px;
+    padding-right:20px;
+    padding-bottom:20px;
  
 }
 
@@ -175,3 +186,30 @@ header{
     font-size:24px;
     display:none;
 }
+
+.tag {
+ border-radius: 5px;
+
+ margin-bottom: 15px;
+ margin-right:20px;
+ color:white;
+ font-weight: 700;
+ font-size: 14px;
+ padding:10px 20px;
+ 
+}
+.white {
+    color:white;
+    margin-left:15px;
+}
+
+    /* @media screen and (max-width:625px) {
+        #card-deck{
+            margin-top:300px;  }
+        .allButtons{
+            display:flex;
+            flex-direction: column;
+        }
+        
+    } */
+    

@@ -26,6 +26,9 @@ class RecipeList {
         this.textContentAppliance();
         this.textContentUstensil();
         this.FilterIngredientListener();
+        this.FilterApplianceListener();
+        this.FilterUstensilListener()
+        this.tagCreate()
 
     }
     flexLastRecipe(){//the last card will go to the left
@@ -34,27 +37,30 @@ class RecipeList {
     }
 
     buttonStyle(){
+
         var buttonArrow= document.getElementsByClassName("btn-arrow");
         for (var i=0; i< buttonArrow.length; i++){
+            buttonArrow[i].previousElementSibling.addEventListener("click", (e)=>{
+            e.stopPropagation()})
             buttonArrow[i].addEventListener("click",(e,)=>{this.CloseButton()
+                e.target.parentNode.nextElementSibling.setAttribute("style", "display:flex !important")
+              
                if(e.target ==buttonArrow[0]){ 
                         e.target.previousElementSibling.placeholder="Recherche un ingrédient";
-                        e.target.previousElementSibling.classList.add("placeholdercolorblue")}
-                else if(e.target == buttonArrow[1]){
+                        e.target.previousElementSibling.classList.add("placeholdercolorblue")
+                        if(this.allRecipeIngredient.length >=3){e.target.parentNode.parentNode.style.width="56%";e.target.parentNode.nextElementSibling.style.height=this.heightResult(this.allRecipeIngredient)}
+                    }
+                else if(e.target == buttonArrow[1]){ 
                         e.target.previousElementSibling.placeholder="Recherche un appareil";
                         e.target.previousElementSibling.classList.add("placeholdercolorgreen")
-        
+                        if(this.allRecipeAppliance.length >=3){e.target.parentNode.parentNode.style.width="56%";e.target.parentNode.nextElementSibling.style.height=this.heightResult(this.allRecipeAppliance)}
                 }
                 else if(e.target == buttonArrow[2]){
                     e.target.previousElementSibling.placeholder="Recherche un ustensil";
                     e.target.previousElementSibling.classList.add("placeholdercolorred")
-    
+                    if(this.allRecipeUstensil.length >=3){
+                        e.target.parentNode.parentNode.style.width="56%";e.target.parentNode.nextElementSibling.style.height=this.heightResult(this.allRecipeUstensil)}
             }
-              e.target.parentNode.nextElementSibling.setAttribute("style", "display:flex !important")
-             if(this.allRecipeIngredient.length >120){e.target.parentNode.parentNode.style.width="800px";e.target.parentNode.nextElementSibling.style.height="840px"}
-            else if(this.allRecipeIngredient.length >40){e.target.parentNode.parentNode.style.width="800px"}
-             else if(this.allRecipeIngredient.length >20){e.target.parentNode.parentNode.style.width="50%"}
-            else if (this.allRecipeIngredient.length >10){e.target.parentNode.parentNode.style.width="25%"}
             e.stopPropagation()
             
               
@@ -62,8 +68,12 @@ class RecipeList {
         } 
        
     }
+    heightResult(e){//Calculate the height necessary for the button expend
+        var total= e.length/3*28 +20;
+        return total+"px"
+    }
    
-    closeButtonListener(){
+    closeButtonListener(){//close the button when click outside the buttons
         let input=document.getElementsByTagName("input")
         document.addEventListener("click", (e)=>{
             if(e.target != input[1] || e.target != input[2] || e.target != input[3]){
@@ -72,16 +82,15 @@ class RecipeList {
         }
         })
     }
-    CloseButton()
+    CloseButton()//close the search buttons
     {
         let btn= document.getElementsByClassName("btni")
         var buttonExtend= document.getElementsByClassName("button-extend")
         for( var i=0; i< btn.length; i++){
-            btn[i].style.width="auto";
+            btn[i].style.width="172px";
             btn[i].style.height="71px";
             buttonExtend[i].setAttribute("style", "display:none !important")
          }
-         console.log(btn[1].firstElementChild.firstElementChild)
          btn[0].firstElementChild.firstElementChild.classList.remove("placeholdercolorblue")
          btn[0].firstElementChild.firstElementChild.placeholder="Ingrédients";
          btn[1].firstElementChild.firstElementChild.classList.remove("placeholdercolorgreen")
@@ -92,22 +101,8 @@ class RecipeList {
     }
     strUcFirst(a){return (a+'').charAt(0).toUpperCase()+a.substr(1);}//The first Letter is capitalize
 
-    FilterListener(){//Listener in the searchbar
-        document.getElementsByTagName("input")[0].addEventListener("input",(e)=>{
-            this.reinitRecipe();
-            this.allRecipeFiltered= [];
-            
-            if (e.target.value.length >= 3){
-                this.FilterAlgo(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())
-                this.FilterInterface() 
-                } 
-            this.textContentIngredient();
-            this.textContentAppliance();
-            this.textContentUstensil();
-                }
-            )
-        
-    }
+
+    
     FilterIngredientListener(){// the ingredient button listen the input
         document.getElementsByTagName("input")[1].addEventListener("input",(e)=>{
             if (e.target.value.length >= 3){
@@ -115,12 +110,12 @@ class RecipeList {
             }
         })
     }
-    FilterPattern(a,e) {// make the array for the specific search in the buttons
+    FilterPatternIngredient(a,e) {// make the array for the specific search in the buttons
         for (let recipe of a){
             for(let ingredient of recipe.ingredients){
             if (ingredient.ingredient.replace(/é|è|ê/g,"e").toLowerCase().includes(e)){
-                this.allRecipeFiltered.push(recipe)
-                this.allRecipeFiltered=Array.from(new Set(this.allRecipeFiltered));
+                // this.allRecipeFiltered.push(recipe)
+                // this.allRecipeFiltered=Array.from(new Set(this.allRecipeFiltered));
                 
  
                 this.allRecipeIngredient.push(this.strUcFirst(ingredient.ingredient.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
@@ -132,16 +127,100 @@ class RecipeList {
               for(let ingredient of this.allRecipeIngredient){
                  document.getElementById("ingredientdiv").innerHTML +=  "<li>"+ingredient+"</li>"}
     }
-   FilterIngredient(e){//display the ingredient in his div
-    document.getElementById("ingredientdiv").innerHTML =""
-    this.allRecipeIngredient=[]
-    if ( document.getElementsByTagName("input")[0].value.length < 3){
-          this.FilterPattern(this.allRecipe,e)
-        }else {
-            this.FilterPattern(this.allRecipeFiltered,e)
-        }   
+    FilterIngredient(e){//display the ingredient in his div
+        document.getElementById("ingredientdiv").innerHTML =""
+        this.allRecipeIngredient=[]
+        if ( document.getElementsByTagName("input")[0].value.length < 3){
+            this.FilterPatternIngredient(this.allRecipe,e)
+            }else {
+                this.FilterPatternIngredient(this.allRecipeFiltered,e)
+            }   
+    }
+
+
+    FilterApplianceListener(){// the appliance button listen the input
+        document.getElementsByTagName("input")[2].addEventListener("input",(e)=>{
+            if (e.target.value.length >= 3){
+                this.FilterAppliance(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())     
+            }
+        })
+    }
+    FilterPatternAppliance(a,e) {// make the array for the specific search in the buttons
+        for (let recipe of a){
+            
+            if (recipe.appliance.replace(/é|è|ê/g,"e").toLowerCase().includes(e)){
+         
+                this.allRecipeAppliance.push(this.strUcFirst(recipe.appliance.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
+                this.allRecipeAppliance=Array.from(new Set(this.allRecipeAppliance));
+                this.allRecipeAppliance.sort(); 
+                      }          
+                  
+             } 
+              for(let appliance of this.allRecipeAppliance){
+                 document.getElementById("appliancediv").innerHTML +=  "<li>"+appliance+"</li>"}
+    }
+    FilterAppliance(e){//display the appliance in his div
+        document.getElementById("appliancediv").innerHTML =""
+        this.allRecipeAppliance=[]
+        if ( document.getElementsByTagName("input")[0].value.length < 3){
+            this.FilterPatternAppliance(this.allRecipe,e)
+            }else {
+                this.FilterPatternAppliance(this.allRecipeFiltered,e)
+            }   
    }
 
+
+    
+    FilterUstensilListener(){// the ustensil  button listen the input
+        document.getElementsByTagName("input")[3].addEventListener("input",(e)=>{
+            if (e.target.value.length >= 3){
+                this.FilterUstensil(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())  
+            }
+        })
+    }
+    FilterPatternUstensil(a,e) {// make the array for the specific search in the buttons
+        for (let recipe of a){
+            for(let ustensil of recipe.ustensils){
+                 
+            if (ustensil.replace(/é|è|ê/g,"e").toLowerCase().includes(e)){
+                this.allRecipeUstensil.push(this.strUcFirst(ustensil.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
+                this.allRecipeUstensil=Array.from(new Set(this.allRecipeUstensil));
+                this.allRecipeUstensil.sort();  
+                    }          
+                } 
+            } 
+            for(let ustensil of this.allRecipeUstensil){
+                document.getElementById("ustensildiv").innerHTML +=  "<li>"+ustensil+"</li>"}
+    }
+        FilterUstensil(e){//display the ustensil in his div
+        document.getElementById("ustensildiv").innerHTML =""
+        this.allRecipeUstensil=[]
+        if ( document.getElementsByTagName("input")[0].value.length < 3){
+            this.FilterPatternUstensil(this.allRecipe,e)
+            }else {
+                this.FilterPatternUstensil(this.allRecipeFiltered,e)
+            }   
+        }
+
+
+
+
+   FilterListener(){//Listener in the searchbar
+    document.getElementsByTagName("input")[0].addEventListener("input",(e)=>{
+        this.reinitRecipe();
+        this.allRecipeFiltered= [];
+        
+        if (e.target.value.length >= 3){
+            this.FilterAlgo(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())
+            this.FilterInterface() 
+            } 
+        this.textContentIngredient();
+        this.textContentAppliance();
+        this.textContentUstensil();
+            }
+        )
+    
+}
     FilterAlgo(e){//compare the word in the search bar with the recipList
 
         for (var i=0; i< this.allRecipe.length; i++){
@@ -229,7 +308,7 @@ class RecipeList {
    
 
     arrayUstensil(e){//create the array with all the ustensils
-        this.allRecipeAppliance=[];
+        this.allRecipeUstensil=[];
         for (let recipe of e){
             for (let ustensil of recipe.ustensils){
             this.allRecipeUstensil.push(this.strUcFirst(ustensil.normalize("NFD").replace(/[\u0300-\u036f]/g, "")))
@@ -248,6 +327,7 @@ class RecipeList {
             this.arrayUstensil(this.allRecipeFiltered)
         }
         for (let ustensil of this.allRecipeUstensil){
+            
             document.getElementById("ustensildiv").innerHTML +=  "<li>"+ustensil+"</li>"
         }
    
@@ -255,7 +335,27 @@ class RecipeList {
     }
 
 
+    tagCreate(){
+        var btnExtend = document.getElementsByClassName("button-extend");
+        var tagContainer= document.getElementById("tag-container")
+        for (var i=0; i< btnExtend.length; i++){
+            btnExtend[i].addEventListener("click",(e)=>{
+                console.log(e.target)
+                if(e.target.parentNode== btnExtend[0]){
+                tagContainer.innerHTML += "<button class='tag blue'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
+                }else if (e.target.parentNode== btnExtend[1]){
+                    tagContainer.innerHTML += "<button class='tag green'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
+                }else if (e.target.parentNode== btnExtend[2]){
+                    tagContainer.innerHTML += "<button class='tag red'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
+                }
 
+                e.stopPropagation()
+
+
+
+            })
+        }
+    }
 
 
 
