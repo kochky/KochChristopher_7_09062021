@@ -5,6 +5,8 @@ class RecipeList {
     this.allRecipeIngredient=[]
     this.allRecipeAppliance=[]
     this.allRecipeUstensil=[]
+    this.tagArray=[]
+    this.allRecipeFilteredProvisional=[]
  
     }
 
@@ -29,6 +31,7 @@ class RecipeList {
         this.FilterApplianceListener();
         this.FilterUstensilListener()
         this.tagCreate()
+      
 
     }
     flexLastRecipe(){//the last card will go to the left
@@ -43,23 +46,23 @@ class RecipeList {
             buttonArrow[i].previousElementSibling.addEventListener("click", (e)=>{
             e.stopPropagation()})
             buttonArrow[i].addEventListener("click",(e,)=>{this.CloseButton()
-                e.target.parentNode.nextElementSibling.setAttribute("style", "display:flex !important")
+                e.target.parentElement.nextElementSibling.setAttribute("style", "display:flex !important")
               
                if(e.target ==buttonArrow[0]){ 
                         e.target.previousElementSibling.placeholder="Recherche un ingrédient";
                         e.target.previousElementSibling.classList.add("placeholdercolorblue")
-                        if(this.allRecipeIngredient.length >=3){e.target.parentNode.parentNode.style.width="56%";e.target.parentNode.nextElementSibling.style.height=this.heightResult(this.allRecipeIngredient)}
+                        if(this.allRecipeIngredient.length >=3){e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeIngredient)}
                     }
                 else if(e.target == buttonArrow[1]){ 
                         e.target.previousElementSibling.placeholder="Recherche un appareil";
                         e.target.previousElementSibling.classList.add("placeholdercolorgreen")
-                        if(this.allRecipeAppliance.length >=3){e.target.parentNode.parentNode.style.width="56%";e.target.parentNode.nextElementSibling.style.height=this.heightResult(this.allRecipeAppliance)}
+                        if(this.allRecipeAppliance.length >=3){e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeAppliance)}
                 }
                 else if(e.target == buttonArrow[2]){
                     e.target.previousElementSibling.placeholder="Recherche un ustensil";
                     e.target.previousElementSibling.classList.add("placeholdercolorred")
                     if(this.allRecipeUstensil.length >=3){
-                        e.target.parentNode.parentNode.style.width="56%";e.target.parentNode.nextElementSibling.style.height=this.heightResult(this.allRecipeUstensil)}
+                        e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeUstensil)}
             }
             e.stopPropagation()
             
@@ -69,7 +72,7 @@ class RecipeList {
        
     }
     heightResult(e){//Calculate the height necessary for the button expend
-        var total= e.length/3*28 +20;
+        var total= e.length/3*28 +30;
         return total+"px"
     }
    
@@ -101,6 +104,9 @@ class RecipeList {
     }
     strUcFirst(a){return (a+'').charAt(0).toUpperCase()+a.substr(1);}//The first Letter is capitalize
 
+    Typo(e){
+       return  e.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+    }
 
     
     FilterIngredientListener(){// the ingredient button listen the input
@@ -113,12 +119,9 @@ class RecipeList {
     FilterPatternIngredient(a,e) {// make the array for the specific search in the buttons
         for (let recipe of a){
             for(let ingredient of recipe.ingredients){
-            if (ingredient.ingredient.replace(/é|è|ê/g,"e").toLowerCase().includes(e)){
-                // this.allRecipeFiltered.push(recipe)
-                // this.allRecipeFiltered=Array.from(new Set(this.allRecipeFiltered));
+            if (this.Typo(ingredient.ingredient).includes(this.Type(e))){
                 
- 
-                this.allRecipeIngredient.push(this.strUcFirst(ingredient.ingredient.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
+                this.allRecipeIngredient.push(this.strUcFirst(this.Typo(ingredient.ingredient)));
                 this.allRecipeIngredient=Array.from(new Set(this.allRecipeIngredient));
                 this.allRecipeIngredient.sort();  
                       }          
@@ -141,16 +144,16 @@ class RecipeList {
     FilterApplianceListener(){// the appliance button listen the input
         document.getElementsByTagName("input")[2].addEventListener("input",(e)=>{
             if (e.target.value.length >= 3){
-                this.FilterAppliance(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())     
+                this.FilterAppliance(this.Typo(e.target.value))     
             }
         })
     }
     FilterPatternAppliance(a,e) {// make the array for the specific search in the buttons
         for (let recipe of a){
             
-            if (recipe.appliance.replace(/é|è|ê/g,"e").toLowerCase().includes(e)){
+            if (this.Typo(recipe.appliance).includes(this.Type(e))){
          
-                this.allRecipeAppliance.push(this.strUcFirst(recipe.appliance.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
+                this.allRecipeAppliance.push(this.strUcFirst(this.Typo(recipe.appliance)));
                 this.allRecipeAppliance=Array.from(new Set(this.allRecipeAppliance));
                 this.allRecipeAppliance.sort(); 
                       }          
@@ -174,7 +177,7 @@ class RecipeList {
     FilterUstensilListener(){// the ustensil  button listen the input
         document.getElementsByTagName("input")[3].addEventListener("input",(e)=>{
             if (e.target.value.length >= 3){
-                this.FilterUstensil(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())  
+                this.FilterUstensil(this.Typo(e.target.value))  
             }
         })
     }
@@ -182,8 +185,8 @@ class RecipeList {
         for (let recipe of a){
             for(let ustensil of recipe.ustensils){
                  
-            if (ustensil.replace(/é|è|ê/g,"e").toLowerCase().includes(e)){
-                this.allRecipeUstensil.push(this.strUcFirst(ustensil.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
+            if (this.Typo(ustensil).includes(this.Typo(e))){
+                this.allRecipeUstensil.push(this.strUcFirst(this.Typo(ustensil)));
                 this.allRecipeUstensil=Array.from(new Set(this.allRecipeUstensil));
                 this.allRecipeUstensil.sort();  
                     }          
@@ -207,32 +210,56 @@ class RecipeList {
 
    FilterListener(){//Listener in the searchbar
     document.getElementsByTagName("input")[0].addEventListener("input",(e)=>{
-        this.reinitRecipe();
-        this.allRecipeFiltered= [];
+       
+          this.reinitRecipe();
         
-        if (e.target.value.length >= 3){
-            this.FilterAlgo(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())
+        
+        if (e.target.value.length >= 3){console.log(this.Typo(e.target.value))
+            this.FilterAlgo(this.Typo(e.target.value))
             this.FilterInterface() 
             } 
         this.textContentIngredient();
         this.textContentAppliance();
         this.textContentUstensil();
-            }
+          
+        }
         )
     
 }
     FilterAlgo(e){//compare the word in the search bar with the recipList
+        if(this.tagArray.length ==0){
+            for (var i=0; i< this.allRecipe.length; i++){
+            let nameRecipe= this.Typo(this.allRecipe[i].name);
+            let descriptionRecipe= this.Typo(this.allRecipe[i].description)
+            for(var u=0; u< this.allRecipe[i].ingredients.length; u++){
+            let ingredientRecipe= this.Typo(this.allRecipe[i].ingredients[u].ingredient)
+            if ( nameRecipe.includes(this.Typo(e)) || ingredientRecipe.includes(this.Typo(e)) || descriptionRecipe.includes(this.Typo(e))) { 
+                this.allRecipeFiltered.push(this.allRecipe[i])
+                this.allRecipeFiltered=Array.from(new Set(this.allRecipeFiltered))
+                }
+                }}
+    }else { 
+      
+        this.tagFilter()
+        for (var i=0; i< this.allRecipeFiltered.length; i++){
+            let nameRecipe= this.Typo(this.allRecipeFiltered[i].name);
+            let descriptionRecipe=this.Typo(this.allRecipeFiltered[i].description)
+            for(var u=0; u< this.allRecipeFiltered[i].ingredients.length; u++){
+            let ingredientRecipe= this.Typo(this.allRecipeFiltered[i].ingredients[u].ingredient)
+            
+            
+        if ( nameRecipe.includes(this.Typo(e)) || ingredientRecipe.includes(this.Typo(e)) || descriptionRecipe.includes(this.Typo(e))) { 
+            this.allRecipeFilteredProvisional.push(this.allRecipeFiltered[i]);
+            this.allRecipeFilteredProvisional=Array.from(new Set(this.allRecipeFilteredProvisional))
+         
+            }
+            }}
+            this.allRecipeFiltered=[]
+            this.allRecipeFiltered=this.allRecipeFilteredProvisional;
+            this.allRecipeFilteredProvisional=[]
+    
 
-        for (var i=0; i< this.allRecipe.length; i++){
-        let nameRecipe= this.allRecipe[i].name.replace(/é|è|ê/g,"e").toLowerCase();
-        let descriptionRecipe= this.allRecipe[i].description.replace(/é|è|ê/g,"e").toLowerCase()
-        for(var u=0; u< this.allRecipe[i].ingredients.length; u++){
-        let ingredientRecipe= this.allRecipe[i].ingredients[u].ingredient.replace(/é|è|ê/g,"e").toLowerCase()
-     if ( nameRecipe.includes(e) || ingredientRecipe.includes(e) || descriptionRecipe.includes(e)) { 
-         this.allRecipeFiltered.push(this.allRecipe[i]);
-         this.allRecipeFiltered=Array.from(new Set(this.allRecipeFiltered))
-        }
-        }}
+    }
     }
     FilterInterface() {//Display or hide the card
         var cardDeck= document.getElementById("card-deck")
@@ -248,17 +275,38 @@ class RecipeList {
         
 
     }
-    reinitRecipe(){//Bring back all the recipe if the search is over or input less than 3 letters
-        for (var i=0; i< this.allRecipe.length; i++){
-           document.getElementById(this.allRecipe[i].id).style.display= "flex";
-        }
+    reinitRecipe(){
+       
+        if(this.tagArray.length==0 && document.getElementsByTagName("input")[0].value.length ==0){
+            this.allRecipeFiltered= [];//Bring back all the recipe if the search is over or input less than 3 letters
+            for (var i=0; i< this.allRecipe.length; i++){
+            document.getElementById(this.allRecipe[i].id).style.display= "flex";
+            document.getElementById("noresult").style.display="none"
+            }
 
+        }else if (this.tagArray.length>0){
+            this.tagFilter()
+            for (var i=0; i< this.allRecipeFiltered.length; i++){
+                document.getElementById(this.allRecipeFiltered[i].id).style.display= "flex";
+        }
+         }else {
+         
+            if (document.getElementsByTagName("input")[0].value.length >= 3){
+                this.FilterAlgo(this.Typo(document.getElementsByTagName("input")[0].value))
+                this.FilterInterface() 
+                } 
+            // this.textContentIngredient();
+            // this.textContentAppliance();
+            // this.textContentUstensil();
+          
+        
+    }
     }
    
     arrayAppliance(e){//create the array with all the appliances
         this.allRecipeAppliance=[];
         for (let appliance of e){
-            this.allRecipeAppliance.push(this.strUcFirst(appliance.appliance.normalize("NFD").replace(/[\u0300-\u036f]/g, "")))
+            this.allRecipeAppliance.push(this.strUcFirst(this.Typo(appliance.appliance)))
             this.allRecipeAppliance=Array.from(new Set(this.allRecipeAppliance))
             this.allRecipeAppliance.sort()
 
@@ -283,7 +331,7 @@ class RecipeList {
         this.allRecipeIngredient=[]
         for (let recipe of e){
             for (let ingredient of recipe.ingredients){
-                this.allRecipeIngredient.push(this.strUcFirst(ingredient.ingredient.normalize("NFD").replace(/[\u0300-\u036f]/g, "")))
+                this.allRecipeIngredient.push(this.strUcFirst(this.Typo(ingredient.ingredient)))
                 this.allRecipeIngredient=Array.from(new Set(this.allRecipeIngredient));
                 this.allRecipeIngredient.sort();
 
@@ -294,7 +342,7 @@ class RecipeList {
         document.getElementById("ingredientdiv").innerHTML = "";
         if( this.allRecipeFiltered.length == 0){
             this.arrayIngredient(this.allRecipe)
-           
+ 
         }else {
 
            this.arrayIngredient(this.allRecipeFiltered)
@@ -311,7 +359,7 @@ class RecipeList {
         this.allRecipeUstensil=[];
         for (let recipe of e){
             for (let ustensil of recipe.ustensils){
-            this.allRecipeUstensil.push(this.strUcFirst(ustensil.normalize("NFD").replace(/[\u0300-\u036f]/g, "")))
+            this.allRecipeUstensil.push(this.strUcFirst(this.Typo(ustensil)))
             this.allRecipeUstensil=Array.from(new Set(this.allRecipeUstensil))
             this.allRecipeUstensil.sort()
             }
@@ -335,30 +383,191 @@ class RecipeList {
     }
 
 
-    tagCreate(){
+    tagCreate(){//create the tag when an ingredient is clicked
         var btnExtend = document.getElementsByClassName("button-extend");
         var tagContainer= document.getElementById("tag-container")
         for (var i=0; i< btnExtend.length; i++){
             btnExtend[i].addEventListener("click",(e)=>{
-                console.log(e.target)
-                if(e.target.parentNode== btnExtend[0]){
-                tagContainer.innerHTML += "<button class='tag blue'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
-                }else if (e.target.parentNode== btnExtend[1]){
+                if(e.target.parentElement== btnExtend[0] && !this.tagArray.includes(this.Typo(e.target.textContent))){
+                    tagContainer.innerHTML += "<button class='tag blue'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
+                this.tagArray.push(this.Typo(e.target.textContent))
+                this.tagArray=Array.from(new Set(this.tagArray))
+                this.FilterAlgoIngredient(this.Typo(e.target.textContent))
+           
+                }else if (e.target.parentElement== btnExtend[1] && !this.tagArray.includes(this.Typo(e.target.textContent))){
                     tagContainer.innerHTML += "<button class='tag green'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
-                }else if (e.target.parentNode== btnExtend[2]){
+                    this.tagArray.push(this.Typo(e.target.textContent))
+                    this.tagArray=Array.from(new Set(this.tagArray))
+                    this.FilterAlgoAppliance(this.Typo(e.target.textContent))
+                }else if (e.target.parentElement== btnExtend[2] && !this.tagArray.includes(this.Typo(e.target.textContent))){
                     tagContainer.innerHTML += "<button class='tag red'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
+                    this.tagArray.push(this.Typo(e.target.textContent))
+                    this.tagArray=Array.from(new Set(this.tagArray))
+                    this.FilterAlgoUstensils(this.Typo(e.target.textContent))
                 }
 
                 e.stopPropagation()
-
-
-
+                this.FilterInterface()
+                this.tagRemove()
+                this.CloseButton()
+                this.textContentIngredient();
+                this.textContentAppliance();
+                this.textContentUstensil();
             })
         }
     }
+    tagFilter(){//modify the allRecipeFiltered according to the tag activated
+        this.allRecipeFiltered=[]
+        if (document.getElementsByClassName("tag")[0].className=="tag blue"){
+            for( let recipe of this.allRecipe ){
+                for (let i of recipe.ingredients){
+                    if (this.Typo(i.ingredient).includes(this.Typo(this.tagArray[0]))){
+                        this.allRecipeFiltered.push(recipe);
+                        }
+                    }
+                }
+        }
+
+        else if (document.getElementsByClassName("tag")[0].className=="tag green"){
+            for (let recipe of this.allRecipe){
+                if (this.Typo(recipe.appliance).includes(this.Typo(this.tagArray[0]))){
+                    this.allRecipeFiltered.push(recipe);
+                }
+            }
+
+        }
+        else if (document.getElementsByClassName("tag")[0].className=="tag red"){
+            for( let recipe of this.allRecipe ){
+                for (let i of recipe.ustensils){
+                    if (this.Typo(i).includes(this.Typo(this.tagArray[0]))){
+                        this.allRecipeFiltered.push(recipe);
+                        }
+                    }
+                }
+
+        }
+    
+
+        for(var i=1; i<this.tagArray.length; i++){
+
+            if(document.getElementsByClassName("tag")[i].className==="tag blue"){ this.FilterAlgoIngredient(this.tagArray[i])}
+            else if(document.getElementsByClassName("tag")[i].className==="tag green"){ this.FilterAlgoAppliance(this.tagArray[i])}
+            else if(document.getElementsByClassName("tag")[i].className==="tag red"){  this.FilterAlgoUstensils(this.tagArray[i])}
+           
+        }
+        this.FilterInterface()
+    }
+    tagRemove(){//remove the tag when the close button is clicked
+        var tagClass= document.getElementsByClassName("tag");
+        for (var i=0; i<tagClass.length; i++){
+            tagClass[i].firstElementChild.addEventListener("click",(e)=>{
+                var index= this.tagArray.indexOf(this.Typo(e.target.parentElement.textContent))
+                console.log(index)
+                this.tagArray.splice(index,1)
+                e.target.parentElement.remove()
+                console.log(this.tagArray)
+                this.reinitRecipe()
+                this.textContentIngredient();
+                this.textContentAppliance();
+                this.textContentUstensil();
+               
+            })
+           
+        } 
+        
+        
+    }
+    FilterAlgoIngredient(e){//filter the recipes with the ingredient tags
+
+        if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
+            
+            for(let recipe of this.allRecipeFiltered){
+                for (let i of recipe.ingredients){
+                    if(this.Typo(i.ingredient).includes(this.Typo(e))){
+                       this.allRecipeFilteredProvisional.push(recipe)                
+                    }
+                }
+            }
+            this.allRecipeFiltered=[];
+            this.allRecipeFiltered=this.allRecipeFilteredProvisional
+            this.allRecipeFilteredProvisional=[]
+
+        }
+        else{
+         
+            for( let recipe of this.allRecipe ){
+                for (let i of recipe.ingredients){
+                    if (this.Typo(i.ingredient).includes(this.Typo(e))){  
+                        this.allRecipeFiltered.push(recipe);
+                       
+                        }
+                    }
+                }
+            }
+
+    }
 
 
-
+    FilterAlgoAppliance(e){//filter the recipes with the appliance tags
+    
+         if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
+             
+             for(let recipe of this.allRecipeFiltered){
+               
+                     if(this.Typo(recipe.appliance).includes(this.Typo(e))){
+                        this.allRecipeFilteredProvisional.push(recipe)                
+                     }
+                 
+             }
+             this.allRecipeFiltered=[];
+             this.allRecipeFiltered=this.allRecipeFilteredProvisional
+             this.allRecipeFilteredProvisional=[]
+ 
+         }
+         else{
+          
+             for( let recipe of this.allRecipe ){
+            
+                     if (this.Typo(recipe.appliance).includes(this.Typo(e))){  
+                         this.allRecipeFiltered.push(recipe);
+                        
+                         }
+                     
+                 }
+             }
+ 
+     }
+     FilterAlgoUstensils(e){//filter the recipes with the ustensils tags
+    
+         if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
+             console.log(this.tagArray)
+             for(let recipe of this.allRecipeFiltered){
+                 for (let i of recipe.ustensils){
+                     if(this.Typo(i).includes(this.Typo(e))){
+                        this.allRecipeFilteredProvisional.push(recipe)    
+                        console.log(this.allRecipeFilteredProvisional)            
+                     }
+                 }
+             }console.log(this.allRecipeFiltered)
+             this.allRecipeFiltered=[];
+             this.allRecipeFiltered=this.allRecipeFilteredProvisional
+             this.allRecipeFilteredProvisional=[]
+       
+         }
+         else{
+          
+             for( let recipe of this.allRecipe ){
+                 for (let i of recipe.ustensils){
+                     if (this.Typo(i).includes(this.Typo(e))){  
+                         this.allRecipeFiltered.push(recipe);
+                        
+                         }
+                     }
+                 }
+             }
+ 
+     }
+  
 
 
 
