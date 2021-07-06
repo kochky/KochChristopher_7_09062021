@@ -34,10 +34,6 @@ class RecipeList {
       
 
     }
-//    // flexLastRecipe(){//the last card will go to the left
-
-//         document.getElementById(this.allRecipe[this.allRecipe.length-1].id).style.flexGrow="1"
-//     }
 
     buttonStyle(){
 
@@ -285,20 +281,19 @@ class RecipeList {
             document.getElementById("noresult").style.display="none"
             }
 
-        }else if (this.tagArray.length>0){
+        }else if (this.tagArray.length>0 && document.getElementsByTagName("input")[0].value.length == 0){
             this.tagFilter()
-            for (var i=0; i< this.allRecipeFiltered.length; i++){
-                document.getElementById(this.allRecipeFiltered[i].id).style.display= "flex";
-        }
-         }else {
+            this.FilterInterface()
+        
+         }else  if (document.getElementsByTagName("input")[0].value.length >= 3 ){
          
-            if (document.getElementsByTagName("input")[0].value.length >= 3){
+         
                 this.FilterAlgo(this.Typo(document.getElementsByTagName("input")[0].value))
                 this.FilterInterface() 
-                }     
+                     
         
-    }
-    }
+        }
+}
    
     arrayAppliance(e){//create the array with all the appliances
         this.allRecipeAppliance=[];
@@ -511,8 +506,6 @@ class RecipeList {
              this.allRecipeFiltered=[];
              this.allRecipeFiltered=this.allRecipeFilteredProvisional
              this.allRecipeFilteredProvisional=[]
-             console.log(this.allRecipeFiltered)
- 
          }
          else{
             this.allRecipeFiltered=this.allRecipe.filter(el =>this.Typo(el.appliance).includes(this.Typo(e)))
