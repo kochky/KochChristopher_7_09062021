@@ -148,6 +148,16 @@ h5 {
 header{
     margin-bottom: 20px;
 }
+.card-deck{
+    justify-content: center !important;
+   
+}
+@media screen and (max-width:574px) {
+    #card-deck{
+        display:flex;
+    align-items: center !important;
+    }
+}
 .card{
     padding:0;
     height:365px;
