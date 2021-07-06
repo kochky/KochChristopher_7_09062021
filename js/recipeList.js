@@ -113,7 +113,7 @@ class RecipeList {
         document.getElementsByTagName("input")[1].addEventListener("input",(e)=>{
             if (e.target.value.length >= 3){
                 this.FilterIngredient(e.target.value.replace(/é|è|ê/g,"e").toLowerCase())     
-            }else {this.textContentIngredient();}
+            }else {this.textContentIngredient()}
         })
     }
     FilterPatternIngredient(a,e) {// make the array for the specific search in the buttons
@@ -145,13 +145,10 @@ class RecipeList {
         document.getElementsByTagName("input")[2].addEventListener("input",(e)=>{
             if (e.target.value.length >= 3){
                 this.FilterAppliance(this.Typo(e.target.value))     
-            }else {
-                this.textContentAppliance();
-            }
+            }else {this.textContentAppliance()}
         })
     }
     FilterPatternAppliance(a,e) {// make the array for the specific search in the buttons
-        
         for (let recipe of a){
             
             if (this.Typo(recipe.appliance).includes(this.Typo(e))){
@@ -181,9 +178,7 @@ class RecipeList {
         document.getElementsByTagName("input")[3].addEventListener("input",(e)=>{
             if (e.target.value.length >= 3){
                 this.FilterUstensil(this.Typo(e.target.value))  
-            }else {
-                this.textContentUstensil();
-            }
+            }else {this.textContentUstensil()}
         })
     }
     FilterPatternUstensil(a,e) {// make the array for the specific search in the buttons
@@ -217,7 +212,8 @@ class RecipeList {
     document.getElementsByTagName("input")[0].addEventListener("input",(e)=>{
        
           this.reinitRecipe();
-         
+        
+        
         if (e.target.value.length >= 3){
             this.FilterAlgo(this.Typo(e.target.value))
             this.FilterInterface() 
@@ -237,18 +233,18 @@ class RecipeList {
             console.log(this.allRecipeFiltered)
             console.log(this.allRecipe)
             this.allRecipeFiltered=Array.from(new Set(this.allRecipeFiltered))
-           var t1= performance.now()
-           console.log(t1- t0)
-      
-    }else { 
-      
-        this.tagFilter()
-        this.allRecipeFilteredProvisional= this.allRecipeFiltered.filter(el =>this.Typo(el.name).includes(e) || this.Typo(el.description).includes(e) || el.ingredients.includes(e))
-        this.allRecipeFilteredProvisional=Array.from(new Set(this.allRecipeFilteredProvisional))
-        this.allRecipeFiltered=[]
-        this.allRecipeFiltered=this.allRecipeFilteredProvisional;
-        this.allRecipeFilteredProvisional=[]
-    }
+        var t1= performance.now()
+        console.log(t1- t0)
+    
+        }else { 
+        
+            this.tagFilter()
+            this.allRecipeFilteredProvisional= this.allRecipeFiltered.filter(el =>this.Typo(el.name).includes(e) || this.Typo(el.description).includes(e) || el.ingredients.includes(e))
+            this.allRecipeFilteredProvisional=Array.from(new Set(this.allRecipeFilteredProvisional))
+            this.allRecipeFiltered=[]
+            this.allRecipeFiltered=this.allRecipeFilteredProvisional;
+            this.allRecipeFilteredProvisional=[]
+        }
     }
     FilterInterface() {//Display or hide the card
         var cardDeck= document.getElementById("card-deck")
@@ -283,11 +279,7 @@ class RecipeList {
             if (document.getElementsByTagName("input")[0].value.length >= 3){
                 this.FilterAlgo(this.Typo(document.getElementsByTagName("input")[0].value))
                 this.FilterInterface() 
-                } 
-            // this.textContentIngredient();
-            // this.textContentAppliance();
-            // this.textContentUstensil();
-          
+                }     
         
     }
     }
@@ -454,6 +446,7 @@ class RecipeList {
                 console.log(index)
                 this.tagArray.splice(index,1)
                 e.target.parentElement.remove()
+                console.log(this.tagArray)
                 this.reinitRecipe()
                 this.textContentIngredient();
                 this.textContentAppliance();
@@ -469,13 +462,7 @@ class RecipeList {
 
         if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
             
-            for(let recipe of this.allRecipeFiltered){
-                for (let i of recipe.ingredients){
-                    if(this.Typo(i.ingredient).includes(this.Typo(e))){
-                       this.allRecipeFilteredProvisional.push(recipe)                
-                    }
-                }
-            }
+            this.allRecipeFilteredProvisional.filter(this.Typo(this.allRecipeFiltered.ingredient).includes(this.Typo(e)))
             this.allRecipeFiltered=[];
             this.allRecipeFiltered=this.allRecipeFilteredProvisional
             this.allRecipeFilteredProvisional=[]
@@ -483,17 +470,15 @@ class RecipeList {
         }
         else{
          
-            for( let recipe of this.allRecipe ){
-                for (let i of recipe.ingredients){
-                    if (this.Typo(i.ingredient).includes(this.Typo(e))){  
-                        this.allRecipeFiltered.push(recipe);
+           
+                    this.allRecipeFiltered.filter(this.Typo(this.allRecipe.ingredient).includes(this.Typo(e)))
+                      
                        
-                        }
-                    }
-                }
-            }
+                   
+            
 
     }
+}
 
 
     FilterAlgoAppliance(e){//filter the recipes with the appliance tags
