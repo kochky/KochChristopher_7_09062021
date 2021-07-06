@@ -5,4 +5,6 @@ for(let recipe of Recipes()){
     newRecipeList.init(newRecipe);
 } 
 newRecipeList.start()
+var cardDeck= document.getElementById("card-deck")
+cardDeck.innerHTML += "<div class='card fakecard'></div>"
       
