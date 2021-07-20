@@ -24,7 +24,9 @@ p{
 .roboto{
     font-family:Roboto
 }
-
+li{
+    cursor: pointer;
+}
 #title {
     color:#d04f4f;
     margin:0 auto;
