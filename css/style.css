@@ -187,6 +187,7 @@ header{
 }
 .card-img-op{
     min-height: 178px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 .line-height, .line-height p, .line-height b{
