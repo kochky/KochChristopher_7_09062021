@@ -26,10 +26,12 @@ class RecipeList {
         this.FilterApplianceListener();
         this.FilterUstensilListener()
         this.tagCreate()
+        this.CloseButton()
     }
 
     buttonStyle(){
         let buttonArrow= document.getElementsByClassName("btn-arrow");
+    
         for (let i=0; i< buttonArrow.length; i++){
             buttonArrow[i].previousElementSibling.addEventListener("click", (e)=>{
             e.stopPropagation()})
@@ -38,20 +40,23 @@ class RecipeList {
                 e.target.parentElement.nextElementSibling.setAttribute("style", "display:flex !important")
               
                 if(e.target ==buttonArrow[0]){ 
-                        e.target.previousElementSibling.placeholder="Recherche un ingrédient";
-                        e.target.previousElementSibling.classList.add("placeholdercolorblue")
-                        if(this.allRecipeIngredient.length >=3){e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeIngredient)}
+                    
+                    e.target.previousElementSibling.placeholder="Recherche un ingrédient";
+                    e.target.previousElementSibling.classList.add("placeholdercolorblue")
+                    if(this.allRecipeIngredient.length >=3){e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeIngredient)}
                     }
                 else if(e.target == buttonArrow[1]){ 
-                        e.target.previousElementSibling.placeholder="Recherche un appareil";
-                        e.target.previousElementSibling.classList.add("placeholdercolorgreen")
-                        if(this.allRecipeAppliance.length >=3){e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeAppliance)}
+                      
+                    e.target.previousElementSibling.placeholder="Recherche un appareil";
+                    e.target.previousElementSibling.classList.add("placeholdercolorgreen")
+                    if(this.allRecipeAppliance.length >=3){e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeAppliance)}
                 }
                 else if(e.target == buttonArrow[2]){
-                    e.target.previousElementSibling.placeholder="Recherche un ustensil";
-                    e.target.previousElementSibling.classList.add("placeholdercolorred")
-                    if(this.allRecipeUstensil.length >=3){
-                        e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeUstensil)}
+            
+                e.target.previousElementSibling.placeholder="Recherche un ustensil";
+                e.target.previousElementSibling.classList.add("placeholdercolorred")
+                if(this.allRecipeUstensil.length >=3){
+                    e.target.parentElement.parentElement.style.width="56%";e.target.parentElement.nextElementSibling.style.height=this.heightResult(this.allRecipeUstensil)}
             }
             e.stopPropagation() 
             })
@@ -80,7 +85,10 @@ class RecipeList {
             btn[i].style.width="172px";
             btn[i].style.height="71px";
             buttonExtend[i].setAttribute("style", "display:none !important")
-         }
+        }
+         btn[0].firstElementChild.firstElementChild.value='';
+         btn[1].firstElementChild.firstElementChild.value='';
+         btn[2].firstElementChild.firstElementChild.value='';
          btn[0].firstElementChild.firstElementChild.classList.remove("placeholdercolorblue")
          btn[0].firstElementChild.firstElementChild.placeholder="Ingrédients";
          btn[1].firstElementChild.firstElementChild.classList.remove("placeholdercolorgreen")
@@ -357,6 +365,7 @@ class RecipeList {
                     this.tagArray.push(this.Typo(e.target.textContent))
                     this.tagArray=Array.from(new Set(this.tagArray))
                     this.FilterAlgoIngredient(this.Typo(e.target.textContent))
+
                 }else if (e.target.parentElement== btnExtend[1] && !this.tagArray.includes(this.Typo(e.target.textContent))){
                     tagContainer.innerHTML += "<button class='tag green'>" +e.target.textContent+"<i class='far fa-times-circle white'></i></button>"
                     this.tagArray.push(this.Typo(e.target.textContent))
@@ -368,7 +377,7 @@ class RecipeList {
                     this.tagArray=Array.from(new Set(this.tagArray))
                     this.FilterAlgoUstensils(this.Typo(e.target.textContent))
                 }
-
+                
                 e.stopPropagation()
                 this.FilterInterface()
                 this.tagRemove()
