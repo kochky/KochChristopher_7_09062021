@@ -483,6 +483,7 @@ class RecipeList {
     
         if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
 
+
             for(let recipe of this.allRecipeFiltered){
                 for (let ustensil of recipe.ustensils){
                     if(this.Typo(ustensil).includes(this.Typo(e))){
@@ -504,5 +505,6 @@ class RecipeList {
                     }
                 }
             }
+
     }
 }
