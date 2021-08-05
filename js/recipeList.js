@@ -467,42 +467,44 @@ class RecipeList {
 
     FilterAlgoAppliance(e){//filter the recipes with the appliance tags
     
-         if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
+        if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
             this.allRecipeFilteredProvisional=this.allRecipeFiltered.filter(el =>this.Typo(el.appliance).includes(this.Typo(e)))
              this.allRecipeFiltered=[];
              this.allRecipeFiltered=this.allRecipeFilteredProvisional
              this.allRecipeFilteredProvisional=[]
          }
-         else{
+        else{
             this.allRecipeFiltered=this.allRecipe.filter(el =>this.Typo(el.appliance).includes(this.Typo(e)))
       
-             }
+            }
  
     }
      FilterAlgoUstensils(e){//filter the recipes with the ustensils tags
     
-         if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
+        if (this.tagArray.length>1 || document.getElementsByTagName("input")[0].value.length>2) {
 
-             for(let recipe of this.allRecipeFiltered){
-                 for (let ustensil of recipe.ustensils){
-                     if(this.Typo(ustensil).includes(this.Typo(e))){
+
+            for(let recipe of this.allRecipeFiltered){
+                for (let ustensil of recipe.ustensils){
+                    if(this.Typo(ustensil).includes(this.Typo(e))){
                         this.allRecipeFilteredProvisional.push(recipe)    
-                     }
-                 }
-              }
-             this.allRecipeFiltered=[];
-             this.allRecipeFiltered=this.allRecipeFilteredProvisional
-             this.allRecipeFilteredProvisional=[]
+                    }
+                }
+            }
+            this.allRecipeFiltered=[];
+            this.allRecipeFiltered=this.allRecipeFilteredProvisional
+            this.allRecipeFilteredProvisional=[]
        
-         }else{
+        }else{
           
-             for( let recipe of this.allRecipe ){
-                 for (let ustensil of recipe.ustensils){
-                     if (this.Typo(ustensil).includes(this.Typo(e))){  
+            for( let recipe of this.allRecipe ){
+                for (let ustensil of recipe.ustensils){
+                    if (this.Typo(ustensil).includes(this.Typo(e))){  
                          this.allRecipeFiltered.push(recipe);
-                         }
-                     }
-                 }
-             }
+                        }
+                    }
+                }
+            }
+
     }
 }
